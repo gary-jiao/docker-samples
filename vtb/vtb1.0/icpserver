@@ -1,0 +1,46 @@
+#!/bin/bash
+#chkconfig:2345 80 05
+#description: VTB service
+RETVAL=0
+
+start(){
+  TASKPID=$(ps aux|grep play|grep -v grep|awk '{print $2}')
+  if [ -n "$TASKPID" ]; then 
+    ps aux|grep play|grep -v grep |awk '{print $2}'|xargs kill
+  fi
+  if [ -f "/opt/zh/icp/RUNNING_PID" ]; then 
+    yes|rm /opt/zh/icp/RUNNING_PID
+  fi
+  if [ -f "/opt/en/icp/RUNNING_PID" ]; then 
+    yes|rm /opt/en/icp/RUNNING_PID
+  fi
+
+  cd /opt/zh
+  /opt/zh/start.sh &
+
+  cd /opt/en
+  /opt/en/start.sh &
+  
+  echo "ICP service started"
+}
+
+stop(){
+  ps aux|grep play|grep -v grep |awk '{print $2}'|xargs kill
+  echo "ICP service stopped"
+}
+
+case $1 in 
+start)
+start
+;;
+restart)
+start
+;;
+stop)
+stop
+;;
+*)
+echo "error choice";;
+esac
+
+exit $RETAL

@@ -1,0 +1,10 @@
+auto br0
+iface br0 inet static
+address 10.243.119.10
+netmask 255.255.254.0
+gateway 10.243.118.1
+bridge_ports eth0
+bridge_stp off
+bridge_fd 0
+bridge_maxwait 0
+dns-nameservers 10.243.118.1

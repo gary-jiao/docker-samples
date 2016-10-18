@@ -1,0 +1,35 @@
+#!/bin/bash
+#chkconfig: 2345 80 05
+#description: agent service
+
+
+start() {
+  scriptName=`basename $0`
+  prc=`ps aux | grep "$scriptName" | grep -v "grep" | wc -l`
+ # [ "$prc" == "2" ] && { exit 0; }
+
+  while [ true ]; do
+    users=`rabbitmqctl list_users | grep pi`
+    [ -z "$users" ] && { 
+      echo 'user pi not found ' >> /var/agent-service.log ; 
+      sleep 2; 
+      continue; 
+    }
+    echo 'found user pi, starting agent......' >> /var/agent-service.log
+    java -jar /opt/workspace/di-agent-0.0.1-SNAPSHOT.jar &
+    break
+  done
+}
+
+stop() {
+  echo 'stop agent'
+  kill -9 `netstat -ntlp | grep 8083 | awk '{split($7,a,"/"); print a[1]}'`
+}
+
+case $1 in 
+start) start ;;
+stop) stop ;;
+*) echo 'error command..';;
+esac
+
+exit 0

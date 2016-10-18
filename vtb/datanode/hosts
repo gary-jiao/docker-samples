@@ -1,0 +1,9 @@
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+
+10.243.117.45 ambari.server.cn
+10.243.117.50 hadoop1.domain.cn
+10.243.116.237  hadoop2.domain.cn
+10.243.116.233  hadoop3.domain.cn
+
+10.243.117.45 monitor.server.cn

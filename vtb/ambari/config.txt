@@ -1,0 +1,27 @@
+docker run -d --privileged=true --name ambari -h ambari.server -v /home/docker/datanode/hosts:/etc/hosts -v /home/docker/datanode/.ssh:/root/.ssh -p 40022:22 -p 48080:8080 ambari tail -f /dev/null
+
+
+docker run -d --privileged=true --name hadoop1 -h hadoop1.domain.cn -v /home/docker/datanode/hosts:/etc/hosts -v /home/docker/datanode/.ssh:/root/.ssh -p 10022:22 -p 51001:50070 -p 51002:50075 -p 51003:56673 -p 51004:8010 -p 51005:8020 -p 51006:50010 -p 51007:8670  datanode_hadoop1 tail -f /dev/null
+docker run -d --privileged=true --name hadoop1 -h hadoop1.domain.cn -v /home/docker/datanode/hosts:/etc/hosts -v /home/docker/datanode/.ssh:/root/.ssh -p 10022:22 -P  datanode1 tail -f /dev/null
+
+docker run -d --privileged=true --name hadoop2 -h hadoop2.domain.cn -v /home/docker/datanode/hosts:/etc/hosts -v /home/docker/datanode/.ssh:/root/.ssh -p 20022:22 -p 52001:50010 -p 52002:50075 -p 52003:8670 -p 52004:10020 -p 52005:8010 -p 52006:19888 -p 52007:10033 -p 52008:52087 -p 52009:8088 -p 52010:10200 -p 52011:8025 -p 52012:8188 -p 52013:8030  -p 52014:2181 -p 52015:2888 -p 52016:38668 -p 52017:8141 -p 52018:3888 -p 52019:8050 datanode_hadoop2 tail -f /dev/null
+docker run -d --privileged=true --name hadoop2 -h hadoop2.domain.cn -v /home/docker/datanode/hosts:/etc/hosts -v /home/docker/datanode/.ssh:/root/.ssh -p 20022:22 -P datanode2 tail -f /dev/null
+
+
+docker run -d --privileged=true --name hadoop3 -h hadoop3.domain.cn -v /home/docker/datanode/hosts:/etc/hosts -v /home/docker/datanode/.ssh:/root/.ssh -p 30022:22 -p 53001:50010 -p 53002:50075 -p 53003:44158 -p 53004:8670 -p 53005:8010 -p 53006:3888 -p 53007:13562 -p 53008:41884 -p 53009:61181 -p 53010:61310 -p 53011:59391 -p 53012:2181 -p 53013:8040 -p 53014:59593 -p 53015:8042 -p 53016:33196 -p 53017:45454 datanode_hadoop3 tail -f /dev/null
+docker run -d --privileged=true --name hadoop3 -h hadoop3.domain.cn -v /home/docker/datanode/hosts:/etc/hosts -v /home/docker/datanode/.ssh:/root/.ssh -p 30022:22 -P datanode3 tail -f /dev/null
+
+
+
+172.17.0.3	ambari.server
+172.17.0.2	hadoop1.domain.cn
+172.17.0.4	hadoop2.domain.cn
+172.17.0.5	hadoop3.domain.cn
+
+
+python /usr/lib/python2.6/site-packages/ambari_agent/HostCleanup.py --silent --skip=users
+
+hive   /  123
+Oozie  / 123
+Accumulo  root & Instance Secret / 123
+Knox Master Secret / 123
