@@ -1,0 +1,2 @@
+cd /opt/cnpmjs.org
+node --harmony_generators dispatch.js
