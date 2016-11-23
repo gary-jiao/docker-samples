@@ -1,0 +1,38 @@
+FROM centos:7.2.1511
+MAINTAINER Docker Gary 
+
+RUN yum -y update && yum -y upgrade
+RUN yum -y install epel-release net-tools
+
+RUN rpm -Uvh http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm
+RUN yum -y install mysql-community-server
+#RUN systemctl enable mysqld &&\  
+#	systemctl start mysqld &&\
+#	mysql -e "grant all privileges on *.* to 'root'@'%' identified by 'mysql';"&&\  
+#	mysql -e "grant all privileges on *.* to 'root'@'localhost' identified by 'mysql';"&&\  
+#	mysql -uroot -pmysql -e "create database cnpmjs_test default character set utf8;"
+
+RUN yum -y install vim openssh-server supervisor &&\
+	echo "alias ll='ls -lh'" >> /root/.bashrc &&\
+	sed -i 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config &&\
+	useradd admin &&\
+        echo "admin:123" | chpasswd  &&\
+        echo "admin   ALL=(ALL)       ALL" >> /etc/sudoers &&\
+	mkdir /var/run/sshd  &&\
+	mkdir -p /var/log/supervisor
+ADD supervisord.conf /etc/supervisord.conf
+
+RUN curl --silent --location https://rpm.nodesource.com/setup_6.x | bash -  &&\
+	yum -y install git nodejs  &&\
+	npm install -g cnpm   &&\
+	cd /opt &&\
+	git clone https://github.com/cnpm/cnpmjs.org.git &&\
+	cd cnpmjs.org &&\
+	npm install
+
+ADD CMD /usr/local/bin/CMD
+COPY my.cnf /etc/mysql/my.cnf
+
+EXPOSE 3306 7001 7002 22
+
+CMD ["/usr/local/bin/CMD"]

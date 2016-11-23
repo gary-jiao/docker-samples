@@ -1,2 +1,9 @@
+#!/bin/bash
+
+service mysql start
+
 cd /opt/cnpmjs.org
-node --harmony_generators dispatch.js
+mysql -uroot -pmysql cnpmjs_test < docs/db.sql  &&\
+npm run start
+
+/usr/sbin/sshd -D

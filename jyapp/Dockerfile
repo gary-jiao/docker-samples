@@ -4,6 +4,7 @@ ADD mongodb-org-3.0.repo /etc/yum.repos.d/
 
 RUN yum -y install epel-release
 
+RUN curl --silent --location https://rpm.nodesource.com/setup_6.x | bash -
 RUN yum -y install net-tools nodejs
 
 RUN yum -y install vim openssh-server supervisor &&\
